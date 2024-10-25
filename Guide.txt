@@ -1,0 +1,24 @@
+We are making a golang alternative to seatbelt.
+our version is more focused on EDR / AV detection.
+
+Light Scan - Process Enumeration, File System
+Normal Scan - PS Enum, File System, Services, DNS Cache
+
+Methods of defense detection:
+Process Enumeration - [https://github.com/mitchellh/go-ps]
+Service Enumeration - [https://github.com/golang/go/issues/20596]
+Registry Keys - [https://pkg.go.dev/golang.org/x/sys/windows/registry , https://stackoverflow.com/questions/18425465/enumerating-registry-values-in-go-golang]
+File System - [https://github.com/karrick/godirwalk]
+Dns Cache - [GOOGLE GOOGLE GOOGLE AI , https://github.com/miekg/dns, https://git.supernets.org/delorean/patdown]
+WMI - This might work for services - [https://github.com/StackExchange/wmi]
+
+Do later:
+Nt Api - Check for hooked dlls - [https://www.ired.team/offensive-security/defense-evasion/detecting-hooked-syscall-functions#code]
+Event Log Inspection - [resource]
+Heavy Scan - PS Enum, File System, Services, DNS Cache, Registry Keys, WMI?, Event log nt api etc
+
+
+operating system types
+windows
+linux
+darwin
