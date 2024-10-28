@@ -12,9 +12,11 @@ import (
 	// "runtime"
 	"github.com/spf13/cobra"
 	// "seatbelt2/internals"
-	"github.com/karrick/godirwalk"
+	fs "github.com/karrick/godirwalk"
 	ps "github.com/mitchellh/go-ps"
+
 	// "github.com/becheran/wildmatch-go"
+	"github.com/iamacarpet/go-win64api"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -64,13 +66,13 @@ var lightScan = &cobra.Command{
 		dirname := "/home/vscode"
 
 		{
-			err := godirwalk.Walk(dirname, &godirwalk.Options{
-				Callback: func(osPathname string, de *godirwalk.Dirent) error {
+			err := fs.Walk(dirname, &fs.Options{
+				Callback: func(osPathname string, de *fs.Dirent) error {
 
 					// matcher := wildmatch.NewWildMatch(string(".*")) <- for wildcard shit, this should come in handy later.
 
 					if strings.Contains(osPathname, ".git") || strings.Contains(osPathname, ".cache") || strings.Contains(osPathname, ".dotnet") || strings.Contains(osPathname, ".vscode-remote") || strings.Contains(osPathname, "go") {
-						return godirwalk.SkipThis
+						return fs.SkipThis
 					}
 					fmt.Printf("%s\n", osPathname)
 					return nil
@@ -91,6 +93,23 @@ var normalScan = &cobra.Command{
 	Long:  `Enumerate Processes, File System, Services, & DNS Cache.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Starting Normal scan...")
+		fmt.Println("Running Process Function")
+		fmt.Println("Checking File System")
+
+		// services
+		{
+			svc, err := winapi.GetServices()
+			if err != nil {
+				fmt.Println("Error getting services.")
+			}
+			for _, v := range svc {
+				fmt.Printf("%-50s - %-75s - Status: %-20s - Accept Stop: %-5t, Running Pid: %d\r\n", v.SCName, v.DisplayName, v.StatusText, v.AcceptStop, v.RunningPid)
+			}
+		}
+		// DNS Cache
+		{
+			
+		}
 	},
 }
 
